@@ -78,8 +78,8 @@ public class CoinDefinition {
 
     public static final boolean supportsBloomFiltering = false; //Requires PROTOCOL_VERSION 70000 in the client
 
-    public static final int Port    = 9999;       //protocol.h GetDefaultPort(testnet=false)
-    public static final int TestPort = 19999;     //protocol.h GetDefaultPort(testnet=true)
+    public static final int Port    = 36999;       //protocol.h GetDefaultPort(testnet=false)
+    public static final int TestPort = 37000;     //protocol.h GetDefaultPort(testnet=true)
 
     //
     //  Production
@@ -104,32 +104,14 @@ public class CoinDefinition {
 
     //net.cpp strDNSSeed
     static public String[] dnsSeeds = new String[] {
-            "dnsseed.darkcoin.io",
-            "dnsseed.darkcoin.qa",
-            "23.23.186.131", //Evan's seed node
-            "162.252.83.46",  //drkpool.com
-            "107.155.71.72",
-            "50.16.206.102",
-            "50.19.116.123",
-            "98.165.130.67",
-            "23.23.186.131",
-            "50.16.206.102",
-            "50.19.116.123",
-            "50.19.116.123",
-            "23.21.204.34",
-            "188.142.39.105",
-            "50.16.206.102", //InternetApe's seed node
-            "23.23.186.131",
-            "50.19.116.123",
-            "54.248.227.151",
-            "42.121.58.91",
-            "50.81.192.39",
-            "54.193.124.32",
-            "62.141.39.175",
-            "5.254.96.3",
-            "175.115.201.44",
-            "208.53.191.2",
-            "162.243.33.16",
+            "MitchellMint.com",
+            "184.173.115.98",
+            "5.250.177.30",
+            "159.8.2.42",
+            "198.100.154.180",
+            "83.102.59.72",
+            "98.157.205.240",
+            "119.81.151.106",
     };
 
     public static int minBroadcastConnections = 0;   //0 for default; we need more peers.
