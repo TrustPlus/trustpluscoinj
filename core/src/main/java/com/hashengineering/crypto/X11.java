@@ -65,6 +65,8 @@ public class X11 {
 
     static byte [] x11(byte header[])
     {
+        System.out.println("Running x11 hass generation.");
+        
         //Initialize
         Sha512Hash[] hash = new Sha512Hash[11];
 
@@ -101,6 +103,8 @@ public class X11 {
 
         ECHO512 echo = new ECHO512();
         hash[10] = new Sha512Hash(echo.digest(hash[9].getBytes()));
+        
+        System.out.println("Completed x11 hash generation.");
 
         return hash[10].trim256().getBytes();
     }

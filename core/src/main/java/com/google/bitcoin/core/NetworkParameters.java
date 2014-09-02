@@ -100,8 +100,7 @@ public abstract class NetworkParameters implements Serializable {
         Block genesisBlock = new Block(n);
         Transaction t = new Transaction(n);
         try {
-            // A script containing the difficulty bits and the following message:
-            //
+            // A script containing the difficulty bits:
             //   coin dependent
             byte[] bytes = Hex.decode(CoinDefinition.genesisTxInBytes);
 
@@ -118,28 +117,28 @@ public abstract class NetworkParameters implements Serializable {
         genesisBlock.addTransaction(t);
         return genesisBlock;
     }
-    private static Block createGenesis1(NetworkParameters n) {
-        Block genesisBlock = new Block(n);
-        Transaction t = new Transaction(n);
-        try {
-            // A script containing the difficulty bits and the following message:
-            //
-            //   "Digitalcoin, A Currency for a Digital Age"
-            byte[] bytes = Hex.decode
-                    ("04b217bb4e022309");
-            t.addInput(new TransactionInput(n, t, bytes));
-            ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
-            Script.writeBytes(scriptPubKeyBytes, Hex.decode
-                    ("04a5814813115273a109cff99907ba4a05d951873dae7acb6c973d0c9e7c88911a3dbc9aa600deac241b91707e7b4ffb30ad91c8e56e695a1ddf318592988afe0a"));
-            scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
-            t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(50, 0), scriptPubKeyBytes.toByteArray()));
-        } catch (Exception e) {
-            // Cannot happen.
-            throw new RuntimeException(e);
-        }
-        genesisBlock.addTransaction(t);
-        return genesisBlock;
-    }
+    //private static Block createGenesis1(NetworkParameters n) {
+    //    Block genesisBlock = new Block(n);
+    //    Transaction t = new Transaction(n);
+    //    try {
+    //        // A script containing the difficulty bits and the following message:
+    //        //
+    //        //   "Digitalcoin, A Currency for a Digital Age"
+    //        byte[] bytes = Hex.decode
+    //                ("04b217bb4e022309");
+    //        t.addInput(new TransactionInput(n, t, bytes));
+    //        ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
+    //        Script.writeBytes(scriptPubKeyBytes, Hex.decode
+    //                ("04a5814813115273a109cff99907ba4a05d951873dae7acb6c973d0c9e7c88911a3dbc9aa600deac241b91707e7b4ffb30ad91c8e56e695a1ddf318592988afe0a"));
+    //        scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
+    //        t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(50, 0), scriptPubKeyBytes.toByteArray()));
+    //   } catch (Exception e) {
+    //        // Cannot happen.
+    //        throw new RuntimeException(e);
+    //    }
+    //    genesisBlock.addTransaction(t);
+    //    return genesisBlock;
+    //}
 
 
 
