@@ -51,7 +51,8 @@ public class HeadersMessage extends Message {
     public void bitcoinSerializeToStream(OutputStream stream) throws IOException {
         stream.write(new VarInt(blockHeaders.size()).encode());
         for (Block header : blockHeaders) {
-            if (header.transactions == null && header.masterNodeVotes == null)
+            //if (header.transactions == null && header.masterNodeVotes == null)
+            if (header.transactions == null)
                 header.bitcoinSerializeToStream(stream);
             else
                 header.cloneAsHeader().bitcoinSerializeToStream(stream);
