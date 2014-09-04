@@ -61,7 +61,10 @@ public class PeerMonitor {
     }
 
     private void setupNetwork() {
+        System.out.println("-----------Setting Up The Network---------");
+        System.out.println("Getting Main Network Parameters.");
         params = MainNetParams.get();
+        System.out.println("Setting Peer Group Parameters.");
         peerGroup = new PeerGroup(params, null /* no chain */);
         peerGroup.setUserAgent("PeerMonitor", "1.0");
         peerGroup.setMaxConnections(4);

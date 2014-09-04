@@ -1,2 +1,10 @@
 mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PeerMonitor
 #mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.DumpWallet test.dat 
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ExamplePaymentChannelServer  
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchTransactions  
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ExamplePaymentChannelClient  
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ForwardingService  
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrintPeers   
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.RefreshWallet

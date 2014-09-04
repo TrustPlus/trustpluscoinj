@@ -20,7 +20,7 @@ public class CoinDefinition {
     public static final String coinURIScheme = "TrustPlus";
     public static final String cryptsyMarketId = "155"; //Currently there is no Cryptsy Market for TrustPlus. Leaving Darkcoin as default for now.
     public static final String cryptsyMarketCurrency = "BTC"; //Currently there is no Cryptsy Market for TrustPlus. Leaving Darkcoin as default for now.
-    public static final String PATTERN_PRIVATE_KEY_START = "[9T]"; //Initial private key.
+    public static final String PATTERN_PRIVATE_KEY_START = "6"; //Initial private key.
 
     public enum CoinPrecision {
         Coins,
@@ -72,8 +72,8 @@ public class CoinDefinition {
     public static final int MIN_PROTOCOL_VERSION = 209;        //version.h MIN_PROTO_VERSION
     public static final int BIP0031_VERSION = 60000;
 
-    public static final int BLOCK_CURRENTVERSION = 6;   //CBlock::CURRENT_VERSION
-    public static final int MAX_BLOCK_SIZE = 1 * 1000 * 1000;
+    public static final int BLOCK_CURRENTVERSION = 1;   //CBlock::CURRENT_VERSION
+    public static final int MAX_BLOCK_SIZE = 1000000;
     
 
     public static final boolean supportsBloomFiltering = false; //Requires PROTOCOL_VERSION 70000 in the client

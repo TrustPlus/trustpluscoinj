@@ -46,12 +46,15 @@ public class MainNetParams extends NetworkParameters {
         id = ID_MAINNET;
         subsidyDecreaseBlockCount = CoinDefinition.subsidyDecreaseBlockCount;
         spendableCoinbaseDepth = CoinDefinition.spendableCoinbaseDepth;
+        System.out.println("Getting Genesis Block x11 hash.");
         String genesisHash = genesisBlock.getHashAsString();
         
         //Force genesisHash NEEDS DEBUGGING!!!! DOESN' APPEAR TO BE CALCULATING HASH CORRECTLY
+        System.out.println("");
+        System.out.println("Genesis hash should be: 000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77");
         System.out.println(genesisHash);
         genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
-        System.out.println(genesisHash);
+        System.out.println("");
         
         checkState(genesisHash.equals(CoinDefinition.genesisHash),
                 genesisHash);

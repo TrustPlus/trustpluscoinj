@@ -57,7 +57,7 @@ public class Block extends Message {
     private static final long serialVersionUID = 2738848929966035281L;
 
     /** How many bytes are required to represent a block header WITHOUT the trailing 00 length byte. */
-    public static final int HEADER_SIZE = 80;
+    public static final int HEADER_SIZE = 0; //was 80 Taken from main.cpp
 
     static final long ALLOWED_TIME_DRIFT = 2 * 60 * 60; // Same value as official client.
 
@@ -165,6 +165,15 @@ public class Block extends Message {
         this.transactions = new LinkedList<Transaction>();
         this.masterNodeVotes = new LinkedList<MasterNodeVote>();
         this.transactions.addAll(transactions);
+        
+        System.out.println("Block Parameters:");
+        System.out.println("Version: " + this.version);
+        System.out.println("Previous Hash: " + this.prevBlockHash);
+        System.out.println("Block Time: " + this.time);
+        System.out.println("Difficulty Target: " + this.difficultyTarget);
+        System.out.println("Nonce: " + this.nonce);
+        System.out.println("Transactions: " + this.transactions);
+        System.out.println("Master Node Votes: " + this.masterNodeVotes);
     }
 
 
@@ -208,6 +217,7 @@ public class Block extends Message {
     }
 
     private void parseTransactions() throws ProtocolException {
+        System.out.println("Prasing Transactions.");
         if (transactionsParsed)
             return;
 
@@ -235,6 +245,13 @@ public class Block extends Message {
         // If this is a genuine lazy parse then length must have been provided to the constructor.
         transactionsParsed = true;
         transactionBytesValid = parseRetain;
+        
+        System.out.println("");
+        System.out.println("Parsing Transactions.");
+        System.out.println("offset:"+offset);
+        System.out.println("Header Size:"+HEADER_SIZE);
+        System.out.println("Num Transactions:"+numTransactions);
+        System.out.println("Transactions:"+transactions);
 
         //parseMasterNodeVotes();
     }
@@ -471,6 +488,13 @@ public class Block extends Message {
             return;
         }
         // fall back to manual write
+        System.out.println("Writing Block Header with the following Parameters:");
+        System.out.println("Version: " + version);
+        System.out.println("Previous Block Hash: " + prevBlockHash);
+        System.out.println("Block Time: " + time);
+        System.out.println("Difficulty Target: " + difficultyTarget);
+        System.out.println("Block Nonce: " + nonce);
+        
         maybeParseHeader();
         Utils.uint32ToByteStreamLE(version, stream);
         stream.write(Utils.reverseBytes(prevBlockHash.getBytes()));
@@ -847,6 +871,7 @@ public class Block extends Message {
     }
 
     private Sha256Hash calculateMerkleRoot() {
+        System.out.println("Calculating Merkle Root.");
         List<byte[]> tree = buildMerkleTree();
         return new Sha256Hash(tree.get(tree.size() - 1));
     }
@@ -882,6 +907,10 @@ public class Block extends Message {
         //    2     3    4  4
         //  / \   / \   / \
         // t1 t2 t3 t4 t5 t5
+        System.out.println("Building Merkle Tree.");
+        System.out.println("Transactions: " + transactions);
+        System.out.println("");
+        
         maybeParseTransactions();
         ArrayList<byte[]> tree = new ArrayList<byte[]>();
         // Start by adding all the hashes of the transactions as leaves of the tree.
@@ -991,6 +1020,10 @@ public class Block extends Message {
 
             merkleRoot = calculateMerkleRoot();
         }
+        System.out.println("");
+        System.out.println("Merkle root should be: 884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa");
+        System.out.println(merkleRoot);
+        System.out.println("");
         return merkleRoot;
     }
 
