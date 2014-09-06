@@ -42,7 +42,6 @@ public class FilteredBlock extends Message {
     }
     
     public void bitcoinSerializeToStream(OutputStream stream) throws IOException {
-        //if (header.transactions == null && header.masterNodeVotes == null)
         if (header.transactions == null)
             header.bitcoinSerializeToStream(stream);
         else
