@@ -100,33 +100,36 @@ public abstract class NetworkParameters implements Serializable {
     private static Block createGenesis(NetworkParameters n) {
         Block genesisBlock = new Block(n);
         Transaction t = new Transaction(n);
-        System.out.println("");
-        System.out.println("Created transaction: " + t);
         try {
             // A script containing the difficulty bits:
             //   coin dependent
             
             //Debug Print Statements:
-
+            System.out.println("Creating Genesis Block.");
             System.out.println("Genesis Block Creation parameters.");
             System.out.println("Tx In: " + CoinDefinition.genesisTxInBytes);
             System.out.println("Tx Out: " + CoinDefinition.genesisTxOutBytes);
             System.out.println("Block Value (total coins): " + Utils.toNanoCoins(CoinDefinition.genesisBlockValue, 0));
             System.out.println("");
+            System.out.println("Created transaction: " + t);
             
-            System.out.println("Creating Genesis Block.");
+            //Adding Transaction Input
             byte[] bytes = Hex.decode(CoinDefinition.genesisTxInBytes);
             t.addInput(new TransactionInput(n, t, bytes));
             System.out.println("Added TxInput to transaction.");
+            
+            //Adding Transaction Output
             ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
             Script.writeBytes(scriptPubKeyBytes, Hex.decode(CoinDefinition.genesisTxOutBytes));
             scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
             t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(CoinDefinition.genesisBlockValue, 0), scriptPubKeyBytes.toByteArray()));
-            System.out.println("Added TxOutput to transaction.");
+            System.out.println("Added TxOutput to transaction: " + t);
+            
         } catch (Exception e) {
             // Cannot happen.
             throw new RuntimeException(e);
         }
+        //Adding Transaction to Block
         System.out.println("Addding transaction: " + t);
         genesisBlock.addTransaction(t);
         System.out.println("");

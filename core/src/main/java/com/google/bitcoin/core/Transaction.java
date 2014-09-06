@@ -686,6 +686,9 @@ public class Transaction extends ChildMessage implements Serializable {
      * accepted by the network. Returns the newly created input.
      */
     public TransactionInput addInput(TransactionOutput from) {
+        System.out.println("Adding Old Transaction Ouput as Transaction Input.");
+        System.out.println("Parameters: " + params);
+        System.out.println("From: " + from);
         return addInput(new TransactionInput(params, this, from));
     }
 
@@ -693,6 +696,8 @@ public class Transaction extends ChildMessage implements Serializable {
      * Adds an input directly, with no checking that it's valid. Returns the new input.
      */
     public TransactionInput addInput(TransactionInput input) {
+        System.out.println("Adding Transaction Input.");
+        System.out.println("Input: " + input);
         unCache();
         input.setParent(this);
         inputs.add(input);

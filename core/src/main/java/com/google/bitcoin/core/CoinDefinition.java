@@ -89,7 +89,7 @@ public class CoinDefinition {
     public static final boolean allowBitcoinPrivateKey = false; //for backward compatibility with previous version of digitalcoin
     public static final int dumpedPrivateKeyHeader = 128;   //common to all coins
     public static final long oldPacketMagic = 0xfbc0b6db;      //0xfb, 0xc0, 0xb6, 0xdb
-    public static final long PacketMagic = 0xbf0c6bbd;
+    public static final long PacketMagic = 0xa1a0a2a3; //Taken from pchMessageStart[4] in main.cpp 0xa1, 0xa0, 0xa2, 0xa3
 
     //Genesis Block Information from main.cpp: LoadBlockIndex //STOPPED HERE NEED TO FIX for TRUSTPLUS:
 
