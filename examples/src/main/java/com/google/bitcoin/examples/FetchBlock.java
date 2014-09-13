@@ -42,14 +42,17 @@ public class FetchBlock {
         peerGroup.startAndWait();
         PeerAddress addr = new PeerAddress(InetAddress.getLocalHost(), params.getPort());
         peerGroup.addAddress(addr);
-        
-        System.out.println("Got Here. 1");
-        
+      
+        System.out.println("Waiting for peers. ");  
         peerGroup.waitForPeers(1).get();
-        
-        Peer peer = peerGroup.getConnectedPeers().get(0);
+        System.out.println("Getting up to 1 connected peers. ");
+        Peer peer = peerGroup.getConnectedPeers().get(1);
 
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Connected to node. Requesting Block: "+args[0]);
         Sha256Hash blockHash = new Sha256Hash(args[0]);
+        System.out.println("as block: "+blockHash);
         Future<Block> future = peer.getBlock(blockHash);
         System.out.println("Waiting for node to send us the requested block: " + blockHash);
         Block block = future.get();

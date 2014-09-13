@@ -35,10 +35,21 @@ import java.net.InetAddress;
 public class PrivateKeys {
     public static void main(String[] args) throws Exception {
         // TODO: Assumes main network not testnet. Make it selectable.
+        System.out.println("");
+        System.out.println("===========================");
+        System.out.println("Setting Network Parameters.");
         NetworkParameters params = MainNetParams.get();
+        System.out.println("Network Parameters Set.");
+        System.out.println("===========================");
+        System.out.println("");
+               
         try {
             // Decode the private key from Satoshis Base58 variant. If 51 characters long then it's from Bitcoins
             // dumpprivkey command and includes a version byte and checksum. Otherwise assume it's a raw key.
+            System.out.println("");
+            System.out.println("===========================");
+            System.out.println("   Decoding Private Key");
+            
             ECKey key;
             if (args[0].length() == 51) {
                 DumpedPrivateKey dumpedPrivateKey = new DumpedPrivateKey(params, args[0]);
@@ -50,15 +61,19 @@ public class PrivateKeys {
             System.out.println("Address from private key is: " + key.toAddress(params).toString());
             // And the address ...
             Address destination = new Address(params, args[1]);
+            System.out.println("Destination address is: "+args[1]);
 
             // Import the private key to a fresh wallet.
+            System.out.println("Creating Wallet and adding key: "+key);
             Wallet wallet = new Wallet(params);
             wallet.addKey(key);
 
+            System.out.println("Finding Transactions that involve coins associated with address "+key.toAddress(params).toString());
             // Find the transactions that involve those coins.
             final MemoryBlockStore blockStore = new MemoryBlockStore(params);
             BlockChain chain = new BlockChain(params, wallet, blockStore);
 
+            System.out.println("Connecting to PeerGroup and Downloading the block chain.");
             final PeerGroup peerGroup = new PeerGroup(params, chain);
             peerGroup.addAddress(new PeerAddress(InetAddress.getLocalHost()));
             peerGroup.start();
@@ -70,6 +85,10 @@ public class PrivateKeys {
             wallet.sendCoins(peerGroup, destination, wallet.getBalance());
             // Wait a few seconds to let the packets flush out to the network (ugly).
             Thread.sleep(5000);
+
+            System.out.println("   Exiting.");
+            System.out.println("===========================");
+            System.out.println("");
             System.exit(0);
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("First arg should be private key in Base58 format. Second argument should be address " +

@@ -108,7 +108,7 @@ public class Block extends Message {
     Block(NetworkParameters params) {
         super(params);
         // Set up a few basic things. We are not complete after this though.
-        version = 1;
+        version = 6;
         difficultyTarget = 0x1d07fff8L;
         time = System.currentTimeMillis() / 1000;
         prevBlockHash = Sha256Hash.ZERO_HASH;
@@ -211,7 +211,7 @@ public class Block extends Message {
     }
 
     private void parseTransactions() throws ProtocolException {
-        System.out.println("Prasing Transactions.");
+        System.out.println("Parsing Transactions.");
         if (transactionsParsed)
             return;
 
@@ -899,7 +899,7 @@ public class Block extends Message {
             merkleRoot = calculateMerkleRoot();
         }
         System.out.println("");
-        System.out.println("Merkle root should be: 884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa");
+        System.out.println("Merkle root should be: 7ce562cc1338c4446ab80c47f8d69856680de197f46d1b35ef07385f1aa676d6");
         System.out.println(merkleRoot);
         System.out.println("");
         return merkleRoot;

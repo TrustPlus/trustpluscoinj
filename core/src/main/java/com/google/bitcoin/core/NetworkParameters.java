@@ -116,7 +116,7 @@ public abstract class NetworkParameters implements Serializable {
             //Adding Transaction Input
             byte[] bytes = Hex.decode(CoinDefinition.genesisTxInBytes);
             t.addInput(new TransactionInput(n, t, bytes));
-            System.out.println("Added TxInput to transaction.");
+            System.out.println("Added TxInput to transaction: "+ Utils.bytesToHexString(bytes));
             
             //Adding Transaction Output
             ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
@@ -130,35 +130,11 @@ public abstract class NetworkParameters implements Serializable {
             throw new RuntimeException(e);
         }
         //Adding Transaction to Block
-        System.out.println("Addding transaction: " + t);
+        System.out.println("Adding transaction: " + t);
         genesisBlock.addTransaction(t);
         System.out.println("");
         return genesisBlock;
     }
-    //private static Block createGenesis1(NetworkParameters n) {
-    //    Block genesisBlock = new Block(n);
-    //    Transaction t = new Transaction(n);
-    //    try {
-    //        // A script containing the difficulty bits and the following message:
-    //        //
-    //        //   "Digitalcoin, A Currency for a Digital Age"
-    //        byte[] bytes = Hex.decode
-    //                ("04b217bb4e022309");
-    //        t.addInput(new TransactionInput(n, t, bytes));
-    //        ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
-    //        Script.writeBytes(scriptPubKeyBytes, Hex.decode
-    //                ("04a5814813115273a109cff99907ba4a05d951873dae7acb6c973d0c9e7c88911a3dbc9aa600deac241b91707e7b4ffb30ad91c8e56e695a1ddf318592988afe0a"));
-    //        scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
-    //        t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(50, 0), scriptPubKeyBytes.toByteArray()));
-    //   } catch (Exception e) {
-    //        // Cannot happen.
-    //        throw new RuntimeException(e);
-    //    }
-    //    genesisBlock.addTransaction(t);
-    //    return genesisBlock;
-    //}
-
-
 
     public static final int TARGET_TIMESPAN = CoinDefinition.TARGET_TIMESPAN;//14 * 24 * 60 * 60;  // 2 weeks per difficulty cycle, on average.
     public static final int TARGET_SPACING = CoinDefinition.TARGET_SPACING;// 10 * 60;  // 10 minutes per block.

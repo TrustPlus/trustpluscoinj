@@ -95,15 +95,15 @@ public class CoinDefinition {
 
     //TRUSTplus Genesis Block Information:
     //Expected hashes for genesis block and genesis transaction merkle root.
-    static public String genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"; //main.cpp: hashGenesisBlock
-    static public String genesisMerkleRoot = "884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa";
+    static public String genesisHash = "00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989"; //main.cpp: hashGenesisBlock
+    static public String genesisMerkleRoot = "7ce562cc1338c4446ab80c47f8d69856680de197f46d1b35ef07385f1aa676d6";
     //Parameters used to generate generate Genesis block and genesis transaction merkle root hashes.
     static public long genesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
-    static public long genesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
-    static public long genesisBlockNonce = (634031);                         //main.cpp: LoadBlockIndex
-    static public int genesisBlockValue = 0;                                 //main.cpp: LoadBlockIndex
-    static public String genesisTxInBytes = "00012a0634204a756c79";   //Raw script sig in. Taken from block 0 in block explorer
-    static public String genesisTxOutBytes = ""; //Raw script sig out. Take from block 0 in block explorer.
+    static public long genesisBlockTime = 1404431590L;                       //main.cpp: LoadBlockIndex
+    static public long genesisBlockNonce = (1532240);                         //main.cpp: LoadBlockIndex
+    static public int genesisBlockValue = 3439788;                                 //main.cpp: LoadBlockIndex
+    static public String genesisTxInBytes = "510101";   //Raw script sig in. Taken from block 0 in block explorer
+    static public String genesisTxOutBytes = "76a914309e3021aa07143350f97c75a2d82ea79bec892988ac"; //Raw script sig out. Take from block 0 in block explorer.
 
 
     //Darkcoin Genesis Block Information:
@@ -138,9 +138,9 @@ public class CoinDefinition {
     // TestNet - dimecoin - not tested
     //
     public static final boolean supportsTestNet = false;
-    public static final int testnetAddressHeader = 111;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
-    public static final int testnetp2shHeader = 196;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
-    public static final long testnetPacketMagic = 0xcee2caff;      //
+    public static final int testnetAddressHeader = 65;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
+    public static final int testnetp2shHeader = 28;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
+    public static final long testnetPacketMagic = 0xa1a0a2a3;      //
     public static final String testnetGenesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
     static public long testnetGenesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
     static public long testnetGenesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
@@ -195,11 +195,10 @@ public class CoinDefinition {
     //checkpoints.cpp Checkpoints::mapCheckpoints
     public static void initCheckpoints(Map<Integer, Sha256Hash> checkpoints)
     {
-        checkpoints.put( 0, new Sha256Hash("000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"));
+        checkpoints.put( 1, new Sha256Hash("00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989"));
     }
 
     //Unit Test Information
     public static final String UNITTEST_ADDRESS = "TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"; 
     public static final String UNITTEST_ADDRESS_PRIVATE_KEY = "7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm";
-    
 }
