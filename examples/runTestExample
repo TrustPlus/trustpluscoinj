@@ -1,6 +1,6 @@
 #mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PeerMonitor
-mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock -Dexe.args="000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"
-#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys -Dexec.args="7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock -Dexe.args="000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"
+mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys -Dexec.args="7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.DumpWallet test.dat 
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ExamplePaymentChannelServer  
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchTransactions  
