@@ -95,15 +95,15 @@ public class CoinDefinition {
 
     //TRUSTplus Genesis Block Information:
     //Expected hashes for genesis block and genesis transaction merkle root.
-    static public String genesisHash = "00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989"; //main.cpp: hashGenesisBlock
-    static public String genesisMerkleRoot = "7ce562cc1338c4446ab80c47f8d69856680de197f46d1b35ef07385f1aa676d6";
+    static public String genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"; //main.cpp: hashGenesisBlock
+    static public String genesisMerkleRoot = "884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa";
     //Parameters used to generate generate Genesis block and genesis transaction merkle root hashes.
     static public long genesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
-    static public long genesisBlockTime = 1404431590L;                       //main.cpp: LoadBlockIndex
-    static public long genesisBlockNonce = (1532240);                         //main.cpp: LoadBlockIndex
-    static public int genesisBlockValue = 3439788;                                 //main.cpp: LoadBlockIndex
-    static public String genesisTxInBytes = "510101";   //Raw script sig in. Taken from block 0 in block explorer
-    static public String genesisTxOutBytes = "76a914309e3021aa07143350f97c75a2d82ea79bec892988ac"; //Raw script sig out. Take from block 0 in block explorer.
+    static public long genesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
+    static public long genesisBlockNonce = (634031);                         //main.cpp: LoadBlockIndex
+    static public int genesisBlockValue = 0;                                 //main.cpp: LoadBlockIndex
+    static public String genesisTxInBytes = "00012a0634204a756c79";   //Raw script sig in. Taken from block 0 in block explorer
+    static public String genesisTxOutBytes = ""; //Raw script sig out. Take from block 0 in block explorer.
 
 
     //Darkcoin Genesis Block Information:

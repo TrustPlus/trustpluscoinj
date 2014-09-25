@@ -23,6 +23,7 @@ import com.google.common.base.Objects;
 import org.spongycastle.util.encoders.Hex;
 
 import javax.annotation.Nullable;
+import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -100,6 +101,13 @@ public abstract class NetworkParameters implements Serializable {
     private static Block createGenesis(NetworkParameters n) {
         Block genesisBlock = new Block(n);
         Transaction t = new Transaction(n);
+
+        //Debug Print Statements:
+        System.out.println("Created transaction: " + t);
+        System.out.println("tx Hex: " + DatatypeConverter.printHexBinary(t.unsafeBitcoinSerialize()));
+        System.out.println("Expected: 01000000e6b0b553010000000000000000000000000000000000000000000000000000000000000000ffffffff0a00012a0634204a756c79ffffffff01000000000000000000000000");
+
+
         try {
             // A script containing the difficulty bits:
             //   coin dependent
@@ -111,20 +119,22 @@ public abstract class NetworkParameters implements Serializable {
             System.out.println("Tx Out: " + CoinDefinition.genesisTxOutBytes);
             System.out.println("Block Value (total coins): " + Utils.toNanoCoins(CoinDefinition.genesisBlockValue, 0));
             System.out.println("");
-            System.out.println("Created transaction: " + t);
+
             
             //Adding Transaction Input
             byte[] bytes = Hex.decode(CoinDefinition.genesisTxInBytes);
             t.addInput(new TransactionInput(n, t, bytes));
             System.out.println("Added TxInput to transaction: "+ Utils.bytesToHexString(bytes));
-            
+            System.out.println("tx Hex: " + DatatypeConverter.printHexBinary(t.unsafeBitcoinSerialize()));
+            System.out.println("Expected: 01000000e6b0b553010000000000000000000000000000000000000000000000000000000000000000ffffffff0a00012a0634204a756c79ffffffff01000000000000000000000000");
             //Adding Transaction Output
             ByteArrayOutputStream scriptPubKeyBytes = new ByteArrayOutputStream();
             Script.writeBytes(scriptPubKeyBytes, Hex.decode(CoinDefinition.genesisTxOutBytes));
             scriptPubKeyBytes.write(ScriptOpCodes.OP_CHECKSIG);
             t.addOutput(new TransactionOutput(n, t, Utils.toNanoCoins(CoinDefinition.genesisBlockValue, 0), scriptPubKeyBytes.toByteArray()));
             System.out.println("Added TxOutput to transaction: " + t);
-            
+            System.out.println("tx Hex: " + DatatypeConverter.printHexBinary(t.unsafeBitcoinSerialize()));
+            System.out.println("Expected: 01000000e6b0b553010000000000000000000000000000000000000000000000000000000000000000ffffffff0a00012a0634204a756c79ffffffff01000000000000000000000000");
         } catch (Exception e) {
             // Cannot happen.
             throw new RuntimeException(e);

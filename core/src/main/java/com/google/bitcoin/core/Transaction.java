@@ -95,6 +95,7 @@ public class Transaction extends ChildMessage implements Serializable {
 
     // These are serialized in both bitcoin and java serialization.
     private long version;
+    private long time;
     private ArrayList<TransactionInput> inputs;
     private ArrayList<TransactionOutput> outputs;
 
@@ -148,6 +149,7 @@ public class Transaction extends ChildMessage implements Serializable {
     public Transaction(NetworkParameters params) {
         super(params);
         version = 1;
+        time = System.currentTimeMillis() / 1000; //Needed for time stamping transactions.
         inputs = new ArrayList<TransactionInput>();
         outputs = new ArrayList<TransactionOutput>();
         // We don't initialize appearsIn deliberately as it's only useful for transactions stored in the wallet.
@@ -420,6 +422,15 @@ public class Transaction extends ChildMessage implements Serializable {
         return true;
     }
 
+    //Added by peercoin devs.
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long nTime) {
+        this.time = nTime;
+    }
+
     /**
      * Returns the earliest time at which the transaction was seen (broadcast or included into the chain),
      * or the epoch if that information isn't available.
@@ -522,7 +533,9 @@ public class Transaction extends ChildMessage implements Serializable {
         cursor = offset;
 
         version = readUint32();
-        optimalEncodingMessageSize = 4;
+        time = readUint32();
+        //optimalEncodingMessageSize = 4;
+        optimalEncodingMessageSize = 8;
 
         // First come the inputs.
         long numInputs = readVarInt();
@@ -591,7 +604,7 @@ public class Transaction extends ChildMessage implements Serializable {
 
     /**
      * A human readable version of the transaction useful for debugging. The format is not guaranteed to be stable.
-     * @param chain If provided, will be used to estimate lock times (if set). Can be null.
+     * @param chain If provided, will be optimalEncodingMessageSize = 4;used to estimate lock times (if set). Can be null.
      */
     public String toString(@Nullable AbstractBlockChain chain) {
         // Basic info about the tx.
@@ -1074,6 +1087,7 @@ public class Transaction extends ChildMessage implements Serializable {
     @Override
     protected void bitcoinSerializeToStream(OutputStream stream) throws IOException {
         uint32ToByteStreamLE(version, stream);
+        uint32ToByteStreamLE(time, stream);
         stream.write(new VarInt(inputs.size()).encode());
         for (TransactionInput in : inputs)
             in.bitcoinSerialize(stream);

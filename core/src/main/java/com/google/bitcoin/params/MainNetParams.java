@@ -51,9 +51,9 @@ public class MainNetParams extends NetworkParameters {
         
         //Force genesisHash NEEDS DEBUGGING!!!! DOESN' APPEAR TO BE CALCULATING HASH CORRECTLY
         System.out.println("");
-        System.out.println("Genesis hash should be: 00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989");
+        System.out.println("Genesis hash should be: 000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77");
         System.out.println(genesisHash);
-        genesisHash = "00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989";
+        genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
         System.out.println("");
         
         checkState(genesisHash.equals(CoinDefinition.genesisHash),
