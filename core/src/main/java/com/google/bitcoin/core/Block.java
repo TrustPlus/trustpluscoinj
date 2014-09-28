@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -57,7 +58,7 @@ public class Block extends Message {
     private static final long serialVersionUID = 2738848929966035281L;
 
     /** How many bytes are required to represent a block header WITHOUT the trailing 00 length byte. */
-    public static final int HEADER_SIZE = 0; //was 80 Taken from main.cpp
+    public static final int HEADER_SIZE = 80;
 
     static final long ALLOWED_TIME_DRIFT = 2 * 60 * 60; // Same value as official client.
 
@@ -108,7 +109,8 @@ public class Block extends Message {
     Block(NetworkParameters params) {
         super(params);
         // Set up a few basic things. We are not complete after this though.
-        version = 6;
+        //version = 6;
+        version = 1;
         difficultyTarget = 0x1d07fff8L;
         time = System.currentTimeMillis() / 1000;
         prevBlockHash = Sha256Hash.ZERO_HASH;
@@ -161,13 +163,13 @@ public class Block extends Message {
         this.transactions = new LinkedList<Transaction>();
         this.transactions.addAll(transactions);
         
-        System.out.println("Block Parameters:");
-        System.out.println("Version: " + this.version);
-        System.out.println("Previous Hash: " + this.prevBlockHash);
-        System.out.println("Block Time: " + this.time);
-        System.out.println("Difficulty Target: " + this.difficultyTarget);
-        System.out.println("Nonce: " + this.nonce);
-        System.out.println("Transactions: " + this.transactions);
+//        System.out.println("Block Parameters:");
+//        System.out.println("Version: " + this.version);
+//        System.out.println("Previous Hash: " + this.prevBlockHash);
+//        System.out.println("Block Time: " + this.time);
+//        System.out.println("Difficulty Target: " + this.difficultyTarget);
+//        System.out.println("Nonce: " + this.nonce);
+//        System.out.println("Transactions: " + this.transactions);
     }
 
 
@@ -211,9 +213,11 @@ public class Block extends Message {
     }
 
     private void parseTransactions() throws ProtocolException {
-        System.out.println("Parsing Transactions.");
-        if (transactionsParsed)
+//        System.out.println("Entered method: parsingTransactions()");
+        if (transactionsParsed) {
+//            System.out.println("Exiting method: parsingTransactions()");
             return;
+        }
 
         cursor = offset + HEADER_SIZE;
         optimalEncodingMessageSize = HEADER_SIZE;
@@ -221,14 +225,22 @@ public class Block extends Message {
             // This message is just a header, it has no transactions.
             transactionsParsed = true;
             transactionBytesValid = false;
+//            System.out.println("Exiting method: parsingTransactions()");
             return;
         }
 
         int numTransactions = (int) readVarInt();
         optimalEncodingMessageSize += VarInt.sizeOf(numTransactions);
         transactions = new ArrayList<Transaction>(numTransactions);
+
+//        System.out.println("Block: "+ Utils.bytesToHexString(bytes));
         for (int i = 0; i < numTransactions; i++) {
+
+//            System.out.println("Parsing transaction "+ i +" out of "+ numTransactions +" Transactions.");
+//            System.out.println("cursor: "+ cursor);
             Transaction tx = new Transaction(params, bytes, cursor, this, parseLazy, parseRetain, UNKNOWN_LENGTH);
+//            System.out.println("tx "+i+" Hex: " + DatatypeConverter.printHexBinary(tx.unsafeBitcoinSerialize()));
+            
             // Label the transaction as coming from the P2P network, so code that cares where we first saw it knows.
             tx.getConfidence().setSource(TransactionConfidence.Source.NETWORK);
             transactions.add(tx);
@@ -240,12 +252,11 @@ public class Block extends Message {
         transactionsParsed = true;
         transactionBytesValid = parseRetain;
         
-        System.out.println("");
-        System.out.println("Parsing Transactions.");
-        System.out.println("offset:"+offset);
-        System.out.println("Header Size:"+HEADER_SIZE);
-        System.out.println("Num Transactions:"+numTransactions);
-        System.out.println("Transactions:"+transactions);
+//        System.out.println("");
+//        System.out.println("offset:"+offset);
+//        System.out.println("Header Size:"+HEADER_SIZE);
+//        System.out.println("Num Transactions:"+numTransactions);
+//        System.out.println("Transactions:"+transactions);
 
     }
 
@@ -401,12 +412,12 @@ public class Block extends Message {
             return;
         }
         // fall back to manual write
-        System.out.println("Writing Block Header with the following Parameters:");
-        System.out.println("Version: " + version);
-        System.out.println("Previous Block Hash: " + prevBlockHash);
-        System.out.println("Block Time: " + time);
-        System.out.println("Difficulty Target: " + difficultyTarget);
-        System.out.println("Block Nonce: " + nonce);
+//        System.out.println("Writing Block Header with the following Parameters:");
+//        System.out.println("Version: " + version);
+//        System.out.println("Previous Block Hash: " + prevBlockHash);
+//        System.out.println("Block Time: " + time);
+//        System.out.println("Difficulty Target: " + difficultyTarget);
+//        System.out.println("Block Nonce: " + nonce);
         
         maybeParseHeader();
         Utils.uint32ToByteStreamLE(version, stream);
@@ -695,29 +706,33 @@ public class Block extends Message {
         //
         // To prevent this attack from being possible, elsewhere we check that the difficultyTarget
         // field is of the right value. This requires us to have the preceeding blocks.
-        BigInteger target = getDifficultyTargetAsInteger();
-        BigInteger h = null;
-        switch (CoinDefinition.coinPOWHash)
-        {
-            case scrypt:
-                    h = getScryptHash().toBigInteger();
-                    break;
-            case SHA256:
-                    h = getHash().toBigInteger();
-                    break;
-            default:  //use the normal getHash() method.
-                h = getHash().toBigInteger();
-                break;
-        }
 
-        if (h.compareTo(target) > 0) {
-            // Proof of work check failed!
-            if (throwException)
-                throw new VerificationException("Hash is higher than target: " + getScryptHashAsString() + " vs "
-                        + target.toString(16));
-            else
-                return false;
-        }
+        //TODO: Verify with PoS difficulty from AbstractBlockChain.checkDifficultyTransitions()
+        //TODO: THE METHOD CALLED IN THE FUTURE SHOULD BE checkProofOfStake(boolean throwException) throws VerificationException {}
+
+//        BigInteger target = getDifficultyTargetAsInteger();
+//        BigInteger h = null;
+//        switch (CoinDefinition.coinPOWHash)
+//        {
+//            case scrypt:
+//                    h = getScryptHash().toBigInteger();
+//                    break;
+//            case SHA256:
+//                    h = getHash().toBigInteger();
+//                    break;
+//            default:  //use the normal getHash() method.
+//                h = getHash().toBigInteger();
+//                break;
+//        }
+//
+//        if (h.compareTo(target) > 0) {
+//            // Proof of work check failed!
+//            if (throwException)
+//                throw new VerificationException("Hash is higher than target: " + getScryptHashAsString() + " vs "
+//                        + target.toString(16));
+//            else
+//                return false;
+//        }
         return true;
     }
 
@@ -749,7 +764,7 @@ public class Block extends Message {
     }
 
     private Sha256Hash calculateMerkleRoot() {
-        System.out.println("Calculating Merkle Root.");
+//        System.out.println("Calculating Merkle Root.");
         List<byte[]> tree = buildMerkleTree();
         return new Sha256Hash(tree.get(tree.size() - 1));
     }
@@ -785,9 +800,9 @@ public class Block extends Message {
         //    2     3    4  4
         //  / \   / \   / \
         // t1 t2 t3 t4 t5 t5
-        System.out.println("Building Merkle Tree.");
-        System.out.println("Transactions: " + transactions);
-        System.out.println("");
+//        System.out.println("Building Merkle Tree.");
+//        System.out.println("Transactions: " + transactions);
+//        System.out.println("");
         
         maybeParseTransactions();
         ArrayList<byte[]> tree = new ArrayList<byte[]>();
@@ -898,10 +913,10 @@ public class Block extends Message {
 
             merkleRoot = calculateMerkleRoot();
         }
-        System.out.println("");
-        System.out.println("Merkle root should be: 884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa");
-        System.out.println(merkleRoot);
-        System.out.println("");
+//        System.out.println("");
+//        System.out.println("tx hash : "+merkleRoot);
+//        System.out.println("Expected: 884d316b6bc615d645153e22851f0c980e9303a60cf7ec422a27a0f61c7afffa");
+//        System.out.println("");
         return merkleRoot;
     }
 

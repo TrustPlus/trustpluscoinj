@@ -107,6 +107,8 @@ public abstract class Message implements Serializable {
         this.bytes = msg;
         this.cursor = this.offset = offset;
         this.length = length;
+
+        //Parsing
         if (parseLazy) {
             parseLite();
         } else {
@@ -119,7 +121,6 @@ public abstract class Message implements Serializable {
             checkState(false, "Length field has not been set in constructor for %s after %s parse. " +
                               "Refer to Message.parseLite() for detail of required Length field contract.",
                        getClass().getSimpleName(), parseLazy ? "lite" : "full");
-        
         if (SELF_CHECK) {
             selfCheck(msg, offset);
         }

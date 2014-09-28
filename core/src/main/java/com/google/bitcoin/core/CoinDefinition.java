@@ -100,6 +100,7 @@ public class CoinDefinition {
     //Parameters used to generate generate Genesis block and genesis transaction merkle root hashes.
     static public long genesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
     static public long genesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
+    static public long genesisTransactionTime = 1404416230L;
     static public long genesisBlockNonce = (634031);                         //main.cpp: LoadBlockIndex
     static public int genesisBlockValue = 0;                                 //main.cpp: LoadBlockIndex
     static public String genesisTxInBytes = "00012a0634204a756c79";   //Raw script sig in. Taken from block 0 in block explorer

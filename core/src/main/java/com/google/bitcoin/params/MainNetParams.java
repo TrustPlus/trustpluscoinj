@@ -21,6 +21,8 @@ import com.google.bitcoin.core.Sha256Hash;
 import com.google.bitcoin.core.Utils;
 import com.google.bitcoin.core.CoinDefinition;
 
+import javax.xml.bind.DatatypeConverter;
+
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -36,28 +38,31 @@ public class MainNetParams extends NetworkParameters {
         addressHeader = CoinDefinition.AddressHeader;
         p2shHeader = CoinDefinition.p2shHeader;
         acceptableAddressCodes = new int[] { addressHeader, p2shHeader};
-
         port = CoinDefinition.Port;
         packetMagic = CoinDefinition.PacketMagic;
-
         genesisBlock.setDifficultyTarget(CoinDefinition.genesisBlockDifficultyTarget);
         genesisBlock.setTime(CoinDefinition.genesisBlockTime);
         genesisBlock.setNonce(CoinDefinition.genesisBlockNonce);
         id = ID_MAINNET;
         subsidyDecreaseBlockCount = CoinDefinition.subsidyDecreaseBlockCount;
         spendableCoinbaseDepth = CoinDefinition.spendableCoinbaseDepth;
-        System.out.println("Getting Genesis Block x11 hash.");
+
+//        System.out.println("block Hex: " + DatatypeConverter.printHexBinary(genesisBlock.unsafeBitcoinSerialize()));
+//        System.out.println("Expected : 010000000000000000000000000000000000000000000000000000000000000000000000faff7a1cf6a0272a42ecf70ca603930e980c1f85223e1545da15c66b6b314d88e6b0b553ffff0f1eafac09000101000000e6b0b553010000000000000000000000000000000000000000000000000000000000000000ffffffff0a00012a0634204a756c79ffffffff0100000000000000000000000");
+
+        //Calculate Genesis Block Hash
+//        System.out.println("Calculating Genesis Block x11 hash.");
         String genesisHash = genesisBlock.getHashAsString();
         
-        //Force genesisHash NEEDS DEBUGGING!!!! DOESN' APPEAR TO BE CALCULATING HASH CORRECTLY
-        System.out.println("");
-        System.out.println("Genesis hash should be: 000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77");
-        System.out.println(genesisHash);
-        genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
+
+//        System.out.println("");
+//        System.out.println("Block Hash: "+genesisHash);
+//        System.out.println("Expected  : 000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77");
+        //Force genesisHash NEEDS DEBUGGING IF CALCULATING HASH CORRECTLY
+        //genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"; //FORCE CORRECT HASH FOR DEBUGGING
         System.out.println("");
         
-        checkState(genesisHash.equals(CoinDefinition.genesisHash),
-                genesisHash);
+        checkState(genesisHash.equals(CoinDefinition.genesisHash), genesisHash);
 
         CoinDefinition.initCheckpoints(checkpoints);
 

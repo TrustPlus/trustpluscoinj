@@ -393,6 +393,22 @@ public abstract class AbstractBlockChain {
                 return false;
             } else {
                 // It connects to somewhere on the chain. Not necessarily the top of the best known chain.
+
+                //TODO: Difficulty transtions used to verify block. Currently trusting all blocks.
+                //TODO: NEED TO FiND A WAY TO VERIFY BLOCKS!!
+                //Peercoinj does the following:
+
+//                // Determine if centrally trusted hash
+//                // Wait a while for the server if the block is less than three hours old
+//                try {
+//                    if (!validHashStore.isValidHash(block.getHash(), this, block.getTimeSeconds() > System.currentTimeMillis()/1000 - 60*60*3)) {
+//                        throw new VerificationException("Invalid hash received");
+//                    }
+//                } catch (IOException e) {
+//                    log.error("IO Error when determining valid hashes: ", e);
+//                    return false;
+//                }
+
                 checkDifficultyTransitions(storedPrev, block);
                 connectBlock(block, storedPrev, shouldVerifyTransactions(), filteredTxHashList, filteredTxn);
             }
@@ -797,27 +813,29 @@ public abstract class AbstractBlockChain {
      * Throws an exception if the blocks difficulty is not correct.
      */
     private void checkDifficultyTransitions(StoredBlock storedPrev, Block nextBlock) throws BlockStoreException, VerificationException {
-        checkState(lock.isHeldByCurrentThread());
-
-        int DiffMode = 1;
-        if (params.getId().equals(NetworkParameters.ID_TESTNET)) {
-            if (storedPrev.getHeight()+1 >= 16) { DiffMode = 4; }
-        }
-        else {
-            if (storedPrev.getHeight()+1 >= 68589) { DiffMode = 4; }
-            else if (storedPrev.getHeight()+1 >= 34140) { DiffMode = 3; }
-            else if (storedPrev.getHeight()+1 >= 15200) { DiffMode = 2; }
-        }
-
-        if (DiffMode == 1) { checkDifficultyTransitions_V1(storedPrev, nextBlock); return; }
-        else if (DiffMode == 2) { checkDifficultyTransitions_V2(storedPrev, nextBlock); return;}
-        else if (DiffMode == 3) { DarkGravityWave(storedPrev, nextBlock); return;}
-        else if (DiffMode == 4) { DarkGravityWave3(storedPrev, nextBlock); return; }
-
-        DarkGravityWave3(storedPrev, nextBlock);
-
-        return;
-
+        //ACCEPTS ALL DIFFICULTIES
+        //TODO: NEEDS TO BE IMPROVED BY CORRECTLY CALCULATING DIFFICULTIES.
+//        checkState(lock.isHeldByCurrentThread());
+//
+//        int DiffMode = 1;
+//        if (params.getId().equals(NetworkParameters.ID_TESTNET)) {
+//            if (storedPrev.getHeight()+1 >= 16) { DiffMode = 4; }
+//        }
+//        else {
+//            if (storedPrev.getHeight()+1 >= 68589) { DiffMode = 4; }
+//            else if (storedPrev.getHeight()+1 >= 34140) { DiffMode = 3; }
+//            else if (storedPrev.getHeight()+1 >= 15200) { DiffMode = 2; }
+//        }
+//
+//        if (DiffMode == 1) { checkDifficultyTransitions_V1(storedPrev, nextBlock); return; }
+//        else if (DiffMode == 2) { checkDifficultyTransitions_V2(storedPrev, nextBlock); return;}
+//        else if (DiffMode == 3) { DarkGravityWave(storedPrev, nextBlock); return;}
+//        else if (DiffMode == 4) { DarkGravityWave3(storedPrev, nextBlock); return; }
+//
+//        DarkGravityWave3(storedPrev, nextBlock);
+//
+//        return;
+//
     }
     private void DarkGravityWave1(StoredBlock storedPrev, Block nextBlock) {
     /* current difficulty formula, limecoin - DarkGravity, written by Evan Duffield - evan@limecoin.io */

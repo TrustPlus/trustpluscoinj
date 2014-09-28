@@ -73,10 +73,12 @@ public class PrivateKeys {
             final MemoryBlockStore blockStore = new MemoryBlockStore(params);
             BlockChain chain = new BlockChain(params, wallet, blockStore);
 
-            System.out.println("Connecting to PeerGroup and Downloading the block chain.");
+            System.out.println("Connecting to PeerGroup.");
             final PeerGroup peerGroup = new PeerGroup(params, chain);
             peerGroup.addAddress(new PeerAddress(InetAddress.getLocalHost()));
             peerGroup.start();
+
+            System.out.println("Downloading the block chain.");
             peerGroup.downloadBlockChain();
             peerGroup.stop();
 

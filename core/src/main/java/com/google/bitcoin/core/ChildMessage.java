@@ -52,6 +52,8 @@ public abstract class ChildMessage extends Message {
     public ChildMessage(NetworkParameters params, byte[] msg, int offset, @Nullable Message parent, boolean parseLazy, boolean parseRetain, int length)
             throws ProtocolException {
         super(params, msg, offset, parseLazy, parseRetain, length);
+//        System.out.println("Completed Child Message: "+Utils.bytesToHexString(msg));
+//        System.out.println("offset: "+offset+" length: "+length);
         this.parent = parent;
     }
 

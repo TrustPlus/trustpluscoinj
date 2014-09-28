@@ -185,6 +185,7 @@ public class BitcoinSerializer {
         }
 
         try {
+            //System.out.println("Making message for size: "+header.size+" command: "+header.command+" payload: "+Utils.bytesToHexString(payloadBytes));
             return makeMessage(header.command, header.size, payloadBytes, hash, header.checksum);
         } catch (Exception e) {
             throw new ProtocolException("Error deserializing message " + Utils.bytesToHexString(payloadBytes) + "\n", e);

@@ -141,6 +141,7 @@ public class Peer extends PeerSocketHandler {
 
     // A settable future which completes (with this) when the connection is open
     private final SettableFuture<Peer> connectionOpenFuture = SettableFuture.create();
+    public boolean gaveAddrs;
 
     /**
      * <p>Construct a peer that reads/writes from the given block chain.</p>
@@ -186,6 +187,7 @@ public class Peer extends PeerSocketHandler {
         this.pendingPings = new CopyOnWriteArrayList<PendingPing>();
         this.wallets = new CopyOnWriteArrayList<Wallet>();
         this.memoryPool = mempool;
+        this.gaveAddrs = false;
     }
 
     /**
@@ -206,6 +208,11 @@ public class Peer extends PeerSocketHandler {
         this(params, new VersionMessage(params, blockChain.getBestChainHeight(), true), blockChain, peerAddress);
         this.versionMessage.appendToSubVer(thisSoftwareName, thisSoftwareVersion, null);
     }
+
+//    public Peer(NetworkParameters params, VersionMessage ver, PeerAddress address, AbstractBlockChain chain, MemoryPool memoryPool, PeerGroup peerGroup) {
+//        this(params, ver, address, chain, memoryPool);
+//        this.peerGroup = peerGroup;
+//    }
 
     /**
      * Registers the given object as an event listener that will be invoked on the user thread. Note that listeners
@@ -316,9 +323,8 @@ public class Peer extends PeerSocketHandler {
         } else if (m instanceof GetDataMessage) {
             processGetData((GetDataMessage) m);
         } else if (m instanceof AddressMessage) {
-            // We don't care about addresses of the network right now. But in future,
-            // we should save them in the wallet so we don't put too much load on the seed nodes and can
-            // properly explore the network.
+            if (((AddressMessage)m).getAddresses().size() > 1)
+                gaveAddrs = true;
         } else if (m instanceof HeadersMessage) {
             processHeaders((HeadersMessage) m);
         } else if (m instanceof AlertMessage) {

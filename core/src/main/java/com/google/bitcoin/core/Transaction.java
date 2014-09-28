@@ -53,24 +53,6 @@ import static com.google.common.base.Preconditions.*;
  * are building a wallet, how to present confidence to your users is something to consider carefully.</p>
  */
 public class Transaction extends ChildMessage implements Serializable {
-    /** A comparator that can be used to sort transactions by their updateTime field. */
-    public static final Comparator<Transaction> SORT_TX_BY_UPDATE_TIME = new Comparator<Transaction>() {
-        @Override
-        public int compare(final Transaction tx1, final Transaction tx2) {
-            final long time1 = tx1.getUpdateTime().getTime();
-            final long time2 = tx2.getUpdateTime().getTime();
-            return -(Longs.compare(time1, time2));
-        }
-    };
-    /** A comparator that can be used to sort transactions by their chain height. */
-    public static final Comparator<Transaction> SORT_TX_BY_HEIGHT = new Comparator<Transaction>() {
-        @Override
-        public int compare(final Transaction tx1, final Transaction tx2) {
-            final int height1 = tx1.getConfidence().getAppearedAtChainHeight();
-            final int height2 = tx2.getConfidence().getAppearedAtChainHeight();
-            return -(Ints.compare(height1, height2));
-        }
-    };
     private static final Logger log = LoggerFactory.getLogger(Transaction.class);
     private static final long serialVersionUID = -8567546957352643140L;
 
@@ -197,6 +179,7 @@ public class Transaction extends ChildMessage implements Serializable {
     public Transaction(NetworkParameters params, byte[] msg, int offset, @Nullable Message parent, boolean parseLazy, boolean parseRetain, int length)
             throws ProtocolException {
         super(params, msg, offset, parent, parseLazy, parseRetain, length);
+//        System.out.println("Completed Transaction generation.");
     }
 
     /**
@@ -699,9 +682,9 @@ public class Transaction extends ChildMessage implements Serializable {
      * accepted by the network. Returns the newly created input.
      */
     public TransactionInput addInput(TransactionOutput from) {
-        System.out.println("Adding Old Transaction Ouput as Transaction Input.");
-        System.out.println("Parameters: " + params);
-        System.out.println("From: " + from);
+//        System.out.println("Adding Old Transaction Ouput as Transaction Input.");
+//        System.out.println("Parameters: " + params);
+//        System.out.println("From: " + from);
         return addInput(new TransactionInput(params, this, from));
     }
 
@@ -709,8 +692,8 @@ public class Transaction extends ChildMessage implements Serializable {
      * Adds an input directly, with no checking that it's valid. Returns the new input.
      */
     public TransactionInput addInput(TransactionInput input) {
-        System.out.println("Adding Transaction Input.");
-        System.out.println("Input: " + input);
+//        System.out.println("Adding Transaction Input.");
+//        System.out.println("Input: " + input);
         unCache();
         input.setParent(this);
         inputs.add(input);
