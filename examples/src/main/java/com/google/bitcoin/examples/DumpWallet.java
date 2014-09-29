@@ -30,7 +30,9 @@ public class DumpWallet {
             return;
         }
 
+        System.out.println("Loading wallet from: "+args[0]);
         Wallet wallet = Wallet.loadFromFile(new File(args[0]));
+        System.out.println("Loaded wallet from: "+args[0]);
         System.out.println(wallet.toString());
     }
 }

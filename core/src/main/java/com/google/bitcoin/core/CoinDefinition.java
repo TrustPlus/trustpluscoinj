@@ -15,7 +15,7 @@ import java.util.Vector;
 public class CoinDefinition {
 
 
-    public static final String coinName = "TRUSTplus";
+    public static final String coinName = "TrustPlus";
     public static final String coinTicker = "TRUST";
     public static final String coinURIScheme = "TrustPlus";
     public static final String cryptsyMarketId = "155"; //Currently there is no Cryptsy Market for TrustPlus. Leaving Darkcoin as default for now.
@@ -88,7 +88,6 @@ public class CoinDefinition {
     public static final int p2shHeader = 28;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS
     public static final boolean allowBitcoinPrivateKey = false; //for backward compatibility with previous version of digitalcoin
     public static final int dumpedPrivateKeyHeader = 128;   //common to all coins
-    //public static final long oldPacketMagic = 0xfbc0b6db;      //0xfb, 0xc0, 0xb6, 0xdb
     public static final long PacketMagic = 0xa1a0a2a3; //Taken from pchMessageStart[4] in main.cpp 0xa1, 0xa0, 0xa2, 0xa3
 
     //Genesis Block Information from main.cpp: LoadBlockIndex //STOPPED HERE NEED TO FIX for TRUSTPLUS:
@@ -157,9 +156,6 @@ public class CoinDefinition {
     //static public long testnetGenesisBlockNonce = (3861367235L);                         //main.cpp: LoadBlockIndex
 
 
-
-
-
     //main.cpp GetBlockValue(height, fee)
     public static final BigInteger GetBlockReward(int height)
     {
@@ -196,10 +192,14 @@ public class CoinDefinition {
     //checkpoints.cpp Checkpoints::mapCheckpoints
     public static void initCheckpoints(Map<Integer, Sha256Hash> checkpoints)
     {
-        checkpoints.put( 1, new Sha256Hash("00000f6790d26ddcd21a9b0a20601e0422c57d5a983f8b469e3a1a9e58cd2989"));
+        checkpoints.put( 1000, new Sha256Hash("00000000000fdf06aa38f0f132cbf4475dd8b3eb5d0c62c85226d2be313acd67"));
+        checkpoints.put( 51000, new Sha256Hash("847a903ed586ecf68263028e6fd33c65dd68c12f1cbf5fd03d2fdad445fd3811"));
+        checkpoints.put( 101000, new Sha256Hash("d732e76f2844958ad6281babf65d28194fad97b52fdff342ddd92e01895c9528"));
+        checkpoints.put( 151000, new Sha256Hash("ed4f9f7bc9ab0c6888fe9915eed0398f8550ce725eaff8ca8251a6d45c733292"));
+        checkpoints.put( 201000, new Sha256Hash("a21882cebf00f37a6e9056c135e0d552333943494d2dc2f61965db96249d187b"));
     }
 
     //Unit Test Information
-    public static final String UNITTEST_ADDRESS = "TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"; 
-    public static final String UNITTEST_ADDRESS_PRIVATE_KEY = "7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm";
+    public static final String UNITTEST_ADDRESS = "TWGcdCQ9Ns5ed91td4mpvD2JpbBebJYkPz";
+    public static final String UNITTEST_ADDRESS_PRIVATE_KEY = "VdHKGyyoYhcrY3q1Qvz6tBsKNP39GDX46VuCN5G6LF4TdWctM8nq";
 }

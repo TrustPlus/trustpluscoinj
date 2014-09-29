@@ -179,6 +179,7 @@ message Transaction {
 
   // See Wallet.java for detailed description of pool semantics
   required int32 version = 1;
+  required int64 time = 12;
   required bytes hash = 2;
 
   // If pool is not present, that means either:
@@ -213,7 +214,7 @@ message Transaction {
   }
   optional Purpose purpose = 10 [default = UNKNOWN];
 
-  // Next tag: 12
+  // Next tag: 13
 }
 
 /** The parameters used in the scrypt key derivation function.

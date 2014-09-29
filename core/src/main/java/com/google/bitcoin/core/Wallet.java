@@ -42,10 +42,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.crypto.params.KeyParameter;
 import org.spongycastle.util.encoders.Hex;
+import sun.security.util.BigInt;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.GuardedBy;
+import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
@@ -131,6 +133,20 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
 
     // All transactions together.
     final Map<Sha256Hash, Transaction> transactions;
+
+    // Matt Mitchell: Transactions that were dropped by the risk analysis system. These are not in any pools and not serialized
+    // to disk. We have to keep them around because if we ignore a tx because we think it will never confirm, but
+    // then it actually does confirm and does so within the same network session, remote peers will not resend us
+    // the tx data along with the Bloom filtered block, as they know we already received it once before
+    // (so it would be wasteful to repeat). Thus we keep them around here for a while. If we drop our network
+    // connections then the remote peers will forget that we were sent the tx data previously and send it again
+    // when relaying a filtered merkleblock.
+    private final LinkedHashMap<Sha256Hash, Transaction> riskDropped = new LinkedHashMap<Sha256Hash, Transaction>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<Sha256Hash, Transaction> eldest) {
+            return size() > 1000;
+        }
+    };
 
     // A list of public/private EC keys owned by this user. Access it using addKey[s], hasKey[s] and findPubKeyFromHash.
     private ArrayList<ECKey> keychain;
@@ -438,6 +454,25 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
         }
     }
 
+    /**
+     * <p>
+     * Disables auto-saving, after it had been enabled with
+     * {@link Wallet#autosaveToFile(java.io.File, long, java.util.concurrent.TimeUnit, com.google.bitcoin.wallet.WalletFiles.Listener)}
+     * before. This method blocks until finished.
+     * </p>
+     */
+//    public void shutdownAutosaveAndWait() {
+//        lock.lock();
+//        try {
+//            WalletFiles files = vFileManager;
+//            vFileManager = null;
+//            checkState(files != null, "Auto saving not enabled.");
+//            files.shutdownAndWait();
+//        } finally {
+//            lock.unlock();
+//        }
+//    }
+
     private void saveLater() {
         WalletFiles files = vFileManager;
         if (files != null)
@@ -719,11 +754,11 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
                 return false;
             }
 
-            if (isTransactionRisky(tx, null) && !acceptRiskyTransactions) {
-                log.warn("Received transaction {} with a lock time of {}, but not configured to accept these, discarding",
-                        tx.getHashAsString(), tx.getLockTime());
-                return false;
-            }
+//            if (isTransactionRisky(tx, null) && !acceptRiskyTransactions) {
+//                log.warn("Received transaction {} with a lock time of {}, but not configured to accept these, discarding",
+//                        tx.getHashAsString(), tx.getLockTime());
+//                return false;
+//            }
             return true;
         } finally {
             lock.unlock();
@@ -1588,6 +1623,7 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
          * (rounded down to the nearest kb) as that is how transactions are sorted when added to a block by miners.</p>
          */
         public BigInteger fee = null;
+//        public BigInteger fee = BigInteger.ZERO;
 
         /**
          * <p>A transaction can have a fee attached, which is defined as the difference between the input values
@@ -1897,6 +1933,7 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
                 // This can throw InsufficientMoneyException.
                 FeeCalculation feeCalculation;
                 feeCalculation = new FeeCalculation(req, value, originalInputs, needAtLeastReferenceFee, candidates);
+//                feeCalculation = new FeeCalculation(req, value, originalInputs, candidates);
                 bestCoinSelection = feeCalculation.bestCoinSelection;
                 bestChangeOutput = feeCalculation.bestChangeOutput;
             } else {
@@ -2243,7 +2280,9 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
          * make available, which by default means transaction outputs with at least 1 confirmation and pending
          * transactions created by our own wallet which have been propagated across the network.
          */
-        AVAILABLE
+        AVAILABLE,
+
+        ESTMINUSFEE
     }
 
     /**
@@ -2267,6 +2306,8 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
                 BigInteger value = BigInteger.ZERO;
                 for (TransactionOutput out : all) value = value.add(out.getValue());
                 return value;
+            }else if (balanceType == BalanceType.ESTMINUSFEE) {
+                return getBalance(BalanceType.ESTIMATED).subtract(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE);
             } else {
                 throw new AssertionError("Unknown balance type");  // Unreachable.
             }
@@ -3413,6 +3454,7 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
 
         public FeeCalculation(SendRequest req, BigInteger value, List<TransactionInput> originalInputs,
                               boolean needAtLeastReferenceFee, LinkedList<TransactionOutput> candidates) throws InsufficientMoneyException {
+//                              LinkedList<TransactionOutput> candidates) throws InsufficientMoneyException {
             checkState(lock.isHeldByCurrentThread());
             // There are 3 possibilities for what adding change might do:
             // 1) No effect
@@ -3443,6 +3485,8 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
                 }
                 if (needAtLeastReferenceFee && fees.compareTo(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE) < 0)
                     fees = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
+//                if (fees.compareTo(Transaction.REFERENCE_DEFAULT_MIN_TX_FEE) < 0)
+//                    fees = Transaction.REFERENCE_DEFAULT_MIN_TX_FEE;
 
                 valueNeeded = value.add(fees);
                 if (additionalValueForNextCategory != null)

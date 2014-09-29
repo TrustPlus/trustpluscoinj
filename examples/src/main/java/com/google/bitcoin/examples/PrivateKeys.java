@@ -20,6 +20,7 @@ import com.google.bitcoin.core.*;
 import com.google.bitcoin.params.MainNetParams;
 import com.google.bitcoin.store.MemoryBlockStore;
 
+import java.io.File;
 import java.math.BigInteger;
 import java.net.InetAddress;
 
@@ -67,6 +68,13 @@ public class PrivateKeys {
             System.out.println("Creating Wallet and adding key: "+key);
             Wallet wallet = new Wallet(params);
             wallet.addKey(key);
+            System.out.println("====Displaying wallet====");
+            System.out.println(wallet.toString());
+            System.out.println("====Displayed wallet====");
+
+            //Save wallet to file.
+            File file = new File(args[2]);
+            wallet.saveToFile(file);
 
             System.out.println("Finding Transactions that involve coins associated with address "+key.toAddress(params).toString());
             // Find the transactions that involve those coins.
@@ -75,20 +83,38 @@ public class PrivateKeys {
 
             System.out.println("Connecting to PeerGroup.");
             final PeerGroup peerGroup = new PeerGroup(params, chain);
-            peerGroup.addAddress(new PeerAddress(InetAddress.getLocalHost()));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("184.173.115.98")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("5.250.177.30")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("159.8.2.42")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("198.100.154.180")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("83.102.59.72")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("98.157.205.240")));
+            peerGroup.addAddress(new PeerAddress(InetAddress.getByName("119.81.151.106")));
+
             peerGroup.start();
 
             System.out.println("Downloading the block chain.");
             peerGroup.downloadBlockChain();
             peerGroup.stop();
 
-            // And take them!
+            // Claim them!
             System.out.println("Claiming " + Utils.bitcoinValueToFriendlyString(wallet.getBalance()) + " coins");
-            wallet.sendCoins(peerGroup, destination, wallet.getBalance());
+            System.out.println("====Displaying wallet====");
+            System.out.println(wallet.toString());
+            System.out.println("====Displayed wallet====");
+
+            wallet.saveToFile(file);
+
+            //Send a quarter of them to another address!
+            System.out.println("====Sending Coins to "+args[1]+"====");
+            BigInteger divisor; divisor = new BigInteger ("4");
+            wallet.sendCoins(peerGroup, destination, wallet.getBalance().divide(divisor));
+            System.out.println("====Sent Coins to "+args[1]+"====");
+
             // Wait a few seconds to let the packets flush out to the network (ugly).
             Thread.sleep(5000);
 
-            System.out.println("   Exiting.");
+            System.out.println("Exiting.");
             System.out.println("===========================");
             System.out.println("");
             System.exit(0);

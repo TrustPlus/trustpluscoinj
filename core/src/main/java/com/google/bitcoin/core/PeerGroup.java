@@ -1228,7 +1228,7 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
         lock.lock();
         try {
             if (peers.size() >= numPeers) {
-                System.out.println("Got Here. 2");
+//                System.out.println("Got Here. 2");
                 return Futures.immediateFuture(this);
             }
         } finally {

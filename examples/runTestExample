@@ -1,11 +1,18 @@
+##TEST PEER CONNECTIONS
 #mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PeerMonitor
-#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock -Dexe.args="000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"
-mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys -Dexec.args="7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"
-##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.DumpWallet test.dat 
+##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrintPeers   
+
+##TEST FETCHING BLOCKS, TRANSACTIONS, and COINS
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock -Dexec.args="000003858e8f08046a9d72ebaf1eb80bcbb416f8ecb02dc1eeb2af1afb48f269"
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchTransactions -Dexec.args="12c74b225a2c715e306642d191ea83340ec1b28981e0964ba6044bc162491a43" 
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchBlock -Dexec.args="000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"
+mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys -Dexec.args="7VreznnsSfVEDFRysWHp4s5PQHXPShbxyzhBqG8dj8oNc7a7SE8 TAzm3JA5gRtB2zXjbUS1zFWgZh5fZPBdmQ test-wallet.dat"
+
+##TEST WALLET OPERATIONS
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.DumpWallet -Dexec.args="test-wallet.dat"
+#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.RefreshWallet -Dexec.args="test-wallet.dat"
+
+##OTHER TESTS
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ExamplePaymentChannelServer  
-##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.FetchTransactions  
-#mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrivateKeys -Dexec.args="7Vpv4xdRsoPkt84FbyE6XuBdWPBvRfsHk7LuQMML91zQXEofWWm TWZAmX1gnVkbm8waEqUwmE7pRx8VzUnz7b"
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ExamplePaymentChannelClient  
 ##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.ForwardingService  
-##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.PrintPeers   
-##mvn exec:java -Dexec.mainClass=com.google.bitcoin.examples.RefreshWallet
