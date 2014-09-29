@@ -1,2 +1,4 @@
 ##Build Checkpoints
-mvn clean install exec:java -Dexec.mainClass=com.google.bitcoin.tools.BuildCheckpoints  
+#mvn clean install exec:java -Dexec.mainClass=com.google.bitcoin.tools.BuildCheckpoints  
+mvn clean install exec:java -Dexec.mainClass=com.google.bitcoin.tools.WalletTool -Dexec.args="raw-dump --wallet=../examples/test-wallet.dat"
+#mvn clean install exec:java -Dexec.mainClass=com.google.bitcoin.tools.WalletTool
