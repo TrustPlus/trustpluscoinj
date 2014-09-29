@@ -45,11 +45,12 @@ public class CoinDefinition {
     };
     public static final CoinHash coinPOWHash = CoinHash.x11;
 
-    public static boolean checkpointFileSupport = true;
+    public static boolean checkpointFileSupport = true; //false;
 
     public static final int TARGET_TIMESPAN = (int)(1 * 45);  // 45 seconds per difficulty cycle, on average.
     public static final int TARGET_SPACING = (int)(1 * 45);  // 45 seconds per block.
-    public static final int INTERVAL = TARGET_TIMESPAN / TARGET_SPACING;  //1 blocks
+//    public static final int INTERVAL = TARGET_TIMESPAN / TARGET_SPACING;  //1 blocks
+    public static final int INTERVAL = (int) 51000;  //Checkpoint every 51000 blocks
 
     public static final int getInterval(int height, boolean testNet) {
             return INTERVAL;      //1
@@ -137,23 +138,23 @@ public class CoinDefinition {
     //
     // TestNet - dimecoin - not tested
     //
-    public static final boolean supportsTestNet = false;
-    public static final int testnetAddressHeader = 65;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
-    public static final int testnetp2shHeader = 28;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
-    public static final long testnetPacketMagic = 0xa1a0a2a3;      //
-    public static final String testnetGenesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
-    static public long testnetGenesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
-    static public long testnetGenesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
-    static public long testnetGenesisBlockNonce = (634031L);                         //main.cpp: LoadBlockIndex
+    //public static final boolean supportsTestNet = false;
+    //public static final int testnetAddressHeader = 65;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
+    //public static final int testnetp2shHeader = 28;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
+    //public static final long testnetPacketMagic = 0xa1a0a2a3;      //
+    //public static final String testnetGenesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77";
+    //static public long testnetGenesisBlockDifficultyTarget = (0x1e0fffffL);         //main.cpp: LoadBlockIndex
+    //static public long testnetGenesisBlockTime = 1404416230L;                       //main.cpp: LoadBlockIndex
+    //static public long testnetGenesisBlockNonce = (634031L);                         //main.cpp: LoadBlockIndex
     
-    //public static final boolean supportsTestNet = false; //true;
-    //public static final int testnetAddressHeader = 111;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
-    //public static final int testnetp2shHeader = 196;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
-    //public static final long testnetPacketMagic = 0xcee2caff;      //
-    //public static final String testnetGenesisHash = "00000bafbc94add76cb75e2ec92894837288a481e5c005f6563d91623bf8bc2c";
-    //static public long testnetGenesisBlockDifficultyTarget = (0x1e0ffff0L);         //main.cpp: LoadBlockIndex
-    //static public long testnetGenesisBlockTime = 1390666206L;                       //main.cpp: LoadBlockIndex
-    //static public long testnetGenesisBlockNonce = (3861367235L);                         //main.cpp: LoadBlockIndex
+    public static final boolean supportsTestNet = false; //true;
+    public static final int testnetAddressHeader = 111;             //base58.h CBitcoinAddress::PUBKEY_ADDRESS_TEST
+    public static final int testnetp2shHeader = 196;             //base58.h CBitcoinAddress::SCRIPT_ADDRESS_TEST
+    public static final long testnetPacketMagic = 0xcee2caff;      //
+    public static final String testnetGenesisHash = "00000bafbc94add76cb75e2ec92894837288a481e5c005f6563d91623bf8bc2c";
+    static public long testnetGenesisBlockDifficultyTarget = (0x1e0ffff0L);         //main.cpp: LoadBlockIndex
+    static public long testnetGenesisBlockTime = 1390666206L;                       //main.cpp: LoadBlockIndex
+    static public long testnetGenesisBlockNonce = (3861367235L);                         //main.cpp: LoadBlockIndex
 
 
     //main.cpp GetBlockValue(height, fee)
@@ -171,8 +172,7 @@ public class CoinDefinition {
     public static BigInteger proofOfWorkLimit = Utils.decodeCompactBits(0x1e0fffffL);  //main.cpp bnProofOfWorkLimit (~uint256(0) >> 20); // digitalcoin: starting difficulty is 1 / 2^12
 
     static public String[] testnetDnsSeeds = new String[] {
-            "testnet-seed.trustplus.io",
-            "testnet-seed.trustplus.qa",
+            "0.0.0.0",
     };
     //from alert.cpp: CAlert::CheckSignature
     public static final String SATOSHI_KEY = "04B4E3C86CBB37515D61852F3F08E665324EE2513255EE69E3EB171A4F7A9D23CE56BD23352F6538B2855E0916A09AEBDF4B661CFA919FC726F3BB63EC62619FFB";
@@ -192,7 +192,7 @@ public class CoinDefinition {
     //checkpoints.cpp Checkpoints::mapCheckpoints
     public static void initCheckpoints(Map<Integer, Sha256Hash> checkpoints)
     {
-        checkpoints.put( 1000, new Sha256Hash("00000000000fdf06aa38f0f132cbf4475dd8b3eb5d0c62c85226d2be313acd67"));
+//        checkpoints.put( 1000, new Sha256Hash("00000000000fdf06aa38f0f132cbf4475dd8b3eb5d0c62c85226d2be313acd67"));
         checkpoints.put( 51000, new Sha256Hash("847a903ed586ecf68263028e6fd33c65dd68c12f1cbf5fd03d2fdad445fd3811"));
         checkpoints.put( 101000, new Sha256Hash("d732e76f2844958ad6281babf65d28194fad97b52fdff342ddd92e01895c9528"));
         checkpoints.put( 151000, new Sha256Hash("ed4f9f7bc9ab0c6888fe9915eed0398f8550ce725eaff8ca8251a6d45c733292"));

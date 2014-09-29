@@ -21,8 +21,8 @@ import com.google.bitcoin.crypto.KeyCrypterException;
 import com.google.bitcoin.net.discovery.DnsDiscovery;
 import com.google.bitcoin.net.discovery.PeerDiscovery;
 import com.google.bitcoin.params.MainNetParams;
-import com.google.bitcoin.params.RegTestParams;
-import com.google.bitcoin.params.TestNet3Params;
+//import com.google.bitcoin.params.RegTestParams;
+//import com.google.bitcoin.params.TestNet3Params;
 import com.google.bitcoin.protocols.payments.PaymentRequestException;
 import com.google.bitcoin.protocols.payments.PaymentSession;
 import com.google.bitcoin.store.*;
@@ -240,14 +240,14 @@ public class WalletTool {
                 params = MainNetParams.get();
                 chainFileName = new File("prodnet.chain");
                 break;
-            case TEST:
-                params = TestNet3Params.get();
-                chainFileName = new File("testnet.chain");
-                break;
-            case REGTEST:
-                params = RegTestParams.get();
-                chainFileName = new File("regtest.chain");
-                break;
+//            case TEST:
+//                params = TestNet3Params.get();
+//                chainFileName = new File("testnet.chain");
+//                break;
+//            case REGTEST:
+//                params = RegTestParams.get();
+//                chainFileName = new File("regtest.chain");
+//                break;
             default:
                 throw new RuntimeException("Unreachable.");
         }

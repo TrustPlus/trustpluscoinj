@@ -17,7 +17,8 @@
 package com.google.bitcoin.examples;
 
 import com.google.bitcoin.core.*;
-import com.google.bitcoin.params.TestNet3Params;
+//import com.google.bitcoin.params.TestNet3Params;
+import com.google.bitcoin.params.MainNetParams;
 import com.google.bitcoin.store.BlockStore;
 import com.google.bitcoin.store.MemoryBlockStore;
 
@@ -35,7 +36,9 @@ public class RefreshWallet {
         System.out.println(wallet.toString());
 
         // Set up the components and link them together.
-        final NetworkParameters params = TestNet3Params.get();
+//        final NetworkParameters params = TestNet3Params.get();
+        final NetworkParameters params = MainNetParams.get();
+
         BlockStore blockStore = new MemoryBlockStore(params);
         BlockChain chain = new BlockChain(params, wallet, blockStore);
 

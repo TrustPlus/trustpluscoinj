@@ -18,7 +18,6 @@ package com.google.bitcoin.examples;
 
 import com.google.bitcoin.core.*;
 import com.google.bitcoin.params.MainNetParams;
-import com.google.bitcoin.params.TestNet3Params;
 import com.google.bitcoin.store.BlockStore;
 import com.google.bitcoin.store.MemoryBlockStore;
 import com.google.bitcoin.utils.BriefLogFormatter;

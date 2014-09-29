@@ -60,7 +60,7 @@ public class MainNetParams extends NetworkParameters {
 //        System.out.println("Expected  : 000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77");
         //Force genesisHash NEEDS DEBUGGING IF CALCULATING HASH CORRECTLY
         //genesisHash = "000005eee9ae452766cd6590c53fce4aa523403c121353d9e68a68b18fddcf77"; //FORCE CORRECT HASH FOR DEBUGGING
-        System.out.println("");
+//        System.out.println("");
         
         checkState(genesisHash.equals(CoinDefinition.genesisHash), genesisHash);
 

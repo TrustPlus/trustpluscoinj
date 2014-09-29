@@ -2,7 +2,6 @@ package com.google.bitcoin.tools;
 
 import com.google.bitcoin.core.*;
 import com.google.bitcoin.params.MainNetParams;
-import com.google.bitcoin.params.TestNet3Params;
 import com.google.bitcoin.store.BlockStore;
 import com.google.bitcoin.store.MemoryBlockStore;
 import com.google.bitcoin.utils.BriefLogFormatter;
@@ -41,23 +40,29 @@ public class BuildCheckpoints {
         final BlockStore store = new MemoryBlockStore(PARAMS);
         final BlockChain chain = new BlockChain(PARAMS, store);
         final PeerGroup peerGroup = new PeerGroup(PARAMS, chain);
-        peerGroup.addAddress(InetAddress.getLocalHost());
-        //peerGroup.addAddress(InetAddress.getByName("5.45.101.232"));
-        peerGroup.addAddress(InetAddress.getByName("184.173.115.98"));
-        //peerGroup.addAddress(InetAddress.getByName(CoinDefinition.testnetDnsSeeds[0]));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("184.173.115.98")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("5.250.177.30")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("159.8.2.42")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("198.100.154.180")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("83.102.59.72")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("98.157.205.240")));
+//        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("119.81.151.106")));
+        peerGroup.addAddress(new PeerAddress(InetAddress.getByName("127.0.0.1")));
+
         long now = new Date().getTime() / 1000;
-        peerGroup.setFastCatchupTimeSecs(now);
+//        peerGroup.setFastCatchupTimeSecs(now); //TODO: DEBUG THIS METHOD - Sergio Tafur
 
         final long oneMonthAgo = now;// - (86400 * 30);
+
+	System.out.println("====Starting AbstractBlockChainListener.====");
 
         chain.addListener(new AbstractBlockChainListener() {
             @Override
             public void notifyNewBestBlock(StoredBlock block) throws VerificationException {
                 int height = block.getHeight();
-
                 if (height % CoinDefinition.getIntervalCheckpoints() == 0 && block.getHeader().getTimeSeconds() <= oneMonthAgo) {
 
- //               if (height % PARAMS.getInterval() == 0 && block.getHeader().getTimeSeconds() <= oneMonthAgo) {
+//               if (height % PARAMS.getInterval() == 0 && block.getHeader().getTimeSeconds() <= oneMonthAgo) {
 
                     System.out.println(String.format("Checkpointing block %s at height %d",
                             block.getHeader().getHash(), block.getHeight()));
@@ -66,9 +71,13 @@ public class BuildCheckpoints {
             }
         }, Threading.SAME_THREAD);
 
-        peerGroup.startAndWait();
+        //peerGroup.startAndWait();
+        peerGroup.start();
+	System.out.println("====Downloading BlockChain.====");
         peerGroup.downloadBlockChain();
+	peerGroup.stop();
 
+	System.out.println("====Checking state.====");
         checkState(checkpoints.size() > 0);
 
         // Write checkpoint data out.
@@ -93,12 +102,15 @@ public class BuildCheckpoints {
         digestOutputStream.close();
         fileOutputStream.close();
 
-        peerGroup.stopAndWait();
+//        peerGroup.stopAndWait();
         store.close();
 
         // Sanity check the created file.
         CheckpointManager manager = new CheckpointManager(PARAMS, new FileInputStream(CHECKPOINTS_FILE));
-        checkState(manager.numCheckpoints() == checkpoints.size());
+        System.out.println("Created checkpoint manager.");
+
+        checkState(manager.numCheckpoints() == checkpoints.size()); //TODO: Debug checktate, manager, & checkpoints.
+        System.out.println("Completed checking state of checkpoints file.");
 
         /*if (PARAMS.getId() == NetworkParameters.ID_MAINNET) {
             StoredBlock test = manager.getCheckpointBefore(1390500000); // Thu Jan 23 19:00:00 CET 2014

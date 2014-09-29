@@ -958,6 +958,7 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
      */
     public void downloadBlockChain() {
         DownloadListener listener = new DownloadListener();
+        System.out.println("Entered downLoadBlockchain().");
         startBlockChainDownload(listener);
         try {
             listener.await();
