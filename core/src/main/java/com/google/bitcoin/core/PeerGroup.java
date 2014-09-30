@@ -112,7 +112,7 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
 
     private final NetworkParameters params;
     private final AbstractBlockChain chain;
-    @GuardedBy("lock") private long fastCatchupTimeSecs;
+//    @GuardedBy("lock") private long fastCatchupTimeSecs; //TODO: DEBUG FAST CATCHUP
     private final CopyOnWriteArrayList<Wallet> wallets;
     private final CopyOnWriteArrayList<PeerFilterProvider> peerFilterProviders;
 
@@ -278,7 +278,7 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
     public PeerGroup(NetworkParameters params, @Nullable AbstractBlockChain chain, ClientConnectionManager connectionManager) {
         this.params = checkNotNull(params);
         this.chain = chain;
-        this.fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds();
+//        this.fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds(); //TODO: DEBUG FAST CATCHUP
         this.wallets = new CopyOnWriteArrayList<Wallet>();
         this.peerFilterProviders = new CopyOnWriteArrayList<PeerFilterProvider>();
 
@@ -832,7 +832,7 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
             earliestKeyTimeSecs -= 86400 * 7;
 
             // Do this last so that bloomFilter is already set when it gets called.
-            setFastCatchupTimeSecs(earliestKeyTimeSecs);
+//            setFastCatchupTimeSecs(earliestKeyTimeSecs); //TODO: Need to debug FastCatchup.
         } finally {
             lock.unlock();
         }
@@ -1095,7 +1095,8 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
                 if (downloadListener != null)
                     peer.addEventListener(downloadListener, Threading.SAME_THREAD);
                 downloadPeer.setDownloadData(true);
-                downloadPeer.setDownloadParameters(fastCatchupTimeSecs, bloomFilter != null);
+//                downloadPeer.setDownloadParameters(fastCatchupTimeSecs, bloomFilter != null); //TODO: DEBUG FAST CATCHUP
+                downloadPeer.setDownloadParameters(0, bloomFilter != null); //TODO: DEBUG FAST CATCHUP
             }
         } finally {
             lock.unlock();
@@ -1117,18 +1118,19 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
      * before starting block chain download.
      * Do not use a time > NOW - 1 block, as it will break some block download logic.
      */
-    public void setFastCatchupTimeSecs(long secondsSinceEpoch) {
-        lock.lock();
-        try {
-            Preconditions.checkState(chain == null || !chain.shouldVerifyTransactions(), "Fast catchup is incompatible with fully verifying");
-            fastCatchupTimeSecs = secondsSinceEpoch;
-            if (downloadPeer != null) {
-                downloadPeer.setDownloadParameters(secondsSinceEpoch, bloomFilter != null);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
+      //TODO: Debug why setFastCatchupTime leads peerGroup.downloadBlockChain() to throw a protocol exception.
+//    public void setFastCatchupTimeSecs(long secondsSinceEpoch) {
+//        lock.lock();
+//        try {
+//            Preconditions.checkState(chain == null || !chain.shouldVerifyTransactions(), "Fast catchup is incompatible with fully verifying");
+//            fastCatchupTimeSecs = secondsSinceEpoch;
+//            if (downloadPeer != null) {
+//                downloadPeer.setDownloadParameters(secondsSinceEpoch, bloomFilter != null);
+//            }
+//        } finally {
+//            lock.unlock();
+//        }
+//    }
 
     /**
      * Returns the current fast catchup time. The contents of blocks before this time won't be downloaded as they
@@ -1136,14 +1138,14 @@ public class PeerGroup extends AbstractExecutionThreadService implements Transac
      * the min of the wallets earliest key times.
      * @return a time in seconds since the epoch
      */
-    public long getFastCatchupTimeSecs() {
-        lock.lock();
-        try {
-            return fastCatchupTimeSecs;
-        } finally {
-            lock.unlock();
-        }
-    }
+//    public long getFastCatchupTimeSecs() {
+//        lock.lock();
+//        try {
+//            return fastCatchupTimeSecs;
+//        } finally {
+//            lock.unlock();
+//        }
+//    }
 
     protected void handlePeerDeath(final Peer peer) {
         // Peer deaths can occur during startup if a connect attempt after peer discovery aborts immediately.

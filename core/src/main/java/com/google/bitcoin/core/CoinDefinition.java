@@ -49,8 +49,8 @@ public class CoinDefinition {
 
     public static final int TARGET_TIMESPAN = (int)(1 * 45);  // 45 seconds per difficulty cycle, on average.
     public static final int TARGET_SPACING = (int)(1 * 45);  // 45 seconds per block.
-//    public static final int INTERVAL = TARGET_TIMESPAN / TARGET_SPACING;  //1 blocks
-    public static final int INTERVAL = (int) 51000;  //Checkpoint every 51000 blocks
+    public static final int INTERVAL = TARGET_TIMESPAN / TARGET_SPACING;  //1 blocks
+//    public static final int INTERVAL = (int) 51000;  //Checkpoint every 51000 blocks
 
     public static final int getInterval(int height, boolean testNet) {
             return INTERVAL;      //1

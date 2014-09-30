@@ -91,7 +91,7 @@ public class Peer extends PeerSocketHandler {
     // Each wallet added to the peer will be notified of downloaded transaction data.
     private final CopyOnWriteArrayList<Wallet> wallets;
     // A time before which we only download block headers, after that point we download block bodies.
-    @GuardedBy("lock") private long fastCatchupTimeSecs;
+//    @GuardedBy("lock") private long fastCatchupTimeSecs; //TODO: DEBUG FAST CATCHUP
     // Whether we are currently downloading headers only or block bodies. Starts at true. If the fast catchup time is
     // set AND our best block is before that date, switch to false until block headers beyond that point have been
     // received at which point it gets set to true again. This isn't relevant unless vDownloadData is true.
@@ -182,7 +182,7 @@ public class Peer extends PeerSocketHandler {
         this.vDownloadData = chain != null;
         this.getDataFutures = new CopyOnWriteArrayList<GetDataRequest>();
         this.eventListeners = new CopyOnWriteArrayList<PeerListenerRegistration>();
-        this.fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds();
+//        this.fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds(); //TODO: DEBUG FAST CATCHUP
         this.isAcked = false;
         this.pendingPings = new CopyOnWriteArrayList<PendingPing>();
         this.wallets = new CopyOnWriteArrayList<Wallet>();
@@ -452,7 +452,7 @@ public class Peer extends PeerSocketHandler {
         // the chain if it pre-dates the fast catchup time. If we go past it, we can stop processing the headers and
         // request the full blocks from that point on instead.
         boolean downloadBlockBodies;
-        long fastCatchupTimeSecs;
+//        long fastCatchupTimeSecs; //TODO: DEBUG FAST CATCHUP
 
         lock.lock();
         try {
@@ -461,7 +461,7 @@ public class Peer extends PeerSocketHandler {
                 log.warn("Received headers when Peer is not configured with a chain.");
                 return;
             }
-            fastCatchupTimeSecs = this.fastCatchupTimeSecs;
+//            fastCatchupTimeSecs = this.fastCatchupTimeSecs; //TODO: DEBUG FAST CATCHUP
             downloadBlockBodies = this.downloadBlockBodies;
         } finally {
             lock.unlock();
@@ -474,9 +474,10 @@ public class Peer extends PeerSocketHandler {
                 // Process headers until we pass the fast catchup time, or are about to catch up with the head
                 // of the chain - always process the last block as a full/filtered block to kick us out of the
                 // fast catchup mode (in which we ignore new blocks).
-                boolean passedTime = header.getTimeSeconds() >= fastCatchupTimeSecs;
+//                boolean passedTime = header.getTimeSeconds() >= fastCatchupTimeSecs; //TODO: DEBUG FAST CATCHUP
                 boolean reachedTop = blockChain.getBestChainHeight() >= vPeerVersionMessage.bestHeight;
-                if (!passedTime && !reachedTop) {
+//                if (!passedTime && !reachedTop) { //TODO: DEBUG FAST CATCHUP
+                  if (!reachedTop) {
                     if (!vDownloadData) {
                         // Not download peer anymore, some other peer probably became better.
                         log.info("Lost download peer status, throwing away downloaded headers.");
@@ -1114,15 +1115,15 @@ public class Peer extends PeerSocketHandler {
         try {
             Preconditions.checkNotNull(blockChain);
             if (secondsSinceEpoch == 0) {
-                fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds();
+//                fastCatchupTimeSecs = params.getGenesisBlock().getTimeSeconds(); //TODO: DEBUG FAST CATCHUP
                 downloadBlockBodies = true;
             } else {
-                fastCatchupTimeSecs = secondsSinceEpoch;
+//                fastCatchupTimeSecs = secondsSinceEpoch; //TODO: DEBUG FAST CATCHUP
                 // If the given time is before the current chains head block time, then this has no effect (we already
                 // downloaded everything we need).
-                if (fastCatchupTimeSecs > blockChain.getChainHead().getHeader().getTimeSeconds()) {
+//                if (fastCatchupTimeSecs > blockChain.getChainHead().getHeader().getTimeSeconds()) { //TODO: DEBUG FAST CATCHUP
                     downloadBlockBodies = false;
-                }
+//                }
             }
             this.useFilteredBlocks = useFilteredBlocks;
         } finally {
