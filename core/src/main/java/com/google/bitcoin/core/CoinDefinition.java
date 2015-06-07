@@ -123,14 +123,19 @@ public class CoinDefinition {
     //net.cpp strDNSSeed
     static public String[] dnsSeeds = new String[] {
             //"127.0.0.1",
-            "MitchellMint.com",
-            "184.173.115.98",
-            "5.250.177.30",
-            "159.8.2.42",
-            "198.100.154.180",
-            "83.102.59.72",
-            "98.157.205.240",
-            "119.81.151.106",
+            "TrustPlus.com",
+            "dal5.trustplus.com",
+            "dc5.trustplus.com",
+            "hk1.trustplus.com",
+            "hk2.trustplus.com",
+            "lon1.trustplus.com",
+            "lon2.trustplus.com",
+            "mel1.trustplus.com",
+            "joh1.trustplus.com",
+            "am1.trustplus.com",
+            "am2.trustplus.com",
+            "tor1.cheapstaker.com",
+            "tor1.trustplus.com"
     };
 
     public static int minBroadcastConnections = 0;   //0 for default; we need more peers.
