@@ -135,7 +135,9 @@ public class CoinDefinition {
             "am1.trustplus.com",
             "am2.trustplus.com",
             "tor1.cheapstaker.com",
-            "tor1.trustplus.com"
+            "tor1.trustplus.com",
+            "sp1.trustplus.com"
+            
     };
 
     public static int minBroadcastConnections = 0;   //0 for default; we need more peers.
